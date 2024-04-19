@@ -1,4 +1,4 @@
 package lk.ijse.helloshoeshop.service;
 
-public class InventoryService {
+public interface InventoryService {
 }
