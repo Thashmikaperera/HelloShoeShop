@@ -1,5 +1,5 @@
 package lk.ijse.helloshoeshop.entity.enumeratedData;
 
-public enum Gender {
-    MALE,FEMALE
+public enum PaymentMethod {
+    CASH,CARD
 }
