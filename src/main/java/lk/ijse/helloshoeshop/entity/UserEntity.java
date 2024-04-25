@@ -1,7 +1,7 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Role;
+import lk.ijse.helloshoeshop.Enum.Role;
 
 import java.util.List;
 

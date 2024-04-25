@@ -1,9 +1,8 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Gender;
+import lk.ijse.helloshoeshop.Enum.Gender;
 import lombok.Data;
-import org.apache.logging.log4j.util.Strings;
 
 import java.util.Date;
 

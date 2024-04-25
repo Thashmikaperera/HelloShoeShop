@@ -1,15 +1,14 @@
 package lk.ijse.helloshoeshop.dto;
 
 import jakarta.validation.constraints.*;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Gender;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Level;
+import lk.ijse.helloshoeshop.Enum.Gender;
+import lk.ijse.helloshoeshop.Enum.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.TimerTask;
 
 @AllArgsConstructor
 @NoArgsConstructor

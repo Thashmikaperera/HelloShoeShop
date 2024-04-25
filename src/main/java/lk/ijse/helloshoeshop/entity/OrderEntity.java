@@ -1,7 +1,7 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
-import lk.ijse.helloshoeshop.entity.enumeratedData.PaymentMethod;
+import lk.ijse.helloshoeshop.Enum.PaymentMethod;
 
 import java.security.Timestamp;
 import java.util.List;

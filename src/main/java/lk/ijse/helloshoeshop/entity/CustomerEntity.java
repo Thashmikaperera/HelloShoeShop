@@ -1,12 +1,9 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Gender;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Level;
-import lombok.AllArgsConstructor;
+import lk.ijse.helloshoeshop.Enum.Gender;
+import lk.ijse.helloshoeshop.Enum.Level;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.security.Timestamp;
 import java.util.Date;

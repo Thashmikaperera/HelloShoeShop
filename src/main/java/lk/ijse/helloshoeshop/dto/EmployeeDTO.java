@@ -1,7 +1,7 @@
 package lk.ijse.helloshoeshop.dto;
 
 import jakarta.validation.constraints.*;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Gender;
+import lk.ijse.helloshoeshop.Enum.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

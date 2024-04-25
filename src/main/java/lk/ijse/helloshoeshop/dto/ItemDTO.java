@@ -3,7 +3,7 @@ package lk.ijse.helloshoeshop.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
-import lk.ijse.helloshoeshop.entity.enumeratedData.Status;
+import lk.ijse.helloshoeshop.Enum.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
