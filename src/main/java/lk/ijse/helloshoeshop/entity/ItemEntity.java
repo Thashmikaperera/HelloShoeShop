@@ -1,7 +1,7 @@
 package lk.ijse.helloshoeshop.entity;
 
-import ch.qos.logback.core.status.Status;
 import jakarta.persistence.*;
+import lk.ijse.helloshoeshop.Enum.Status;
 import lombok.Data;
 
 import java.util.List;
