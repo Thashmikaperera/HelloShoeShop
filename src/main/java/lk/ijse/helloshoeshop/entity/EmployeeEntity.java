@@ -12,7 +12,7 @@ import java.util.Date;
 public class EmployeeEntity {
     @Id
     private String employeeCode;
-    private String enployeeName;
+    private String employeeName;
     private String profilePic;
 
     @Enumerated(EnumType.STRING)
