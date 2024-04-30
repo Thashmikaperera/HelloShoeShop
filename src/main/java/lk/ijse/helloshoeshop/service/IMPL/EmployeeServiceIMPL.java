@@ -22,7 +22,7 @@ public class EmployeeServiceIMPL implements EmployeeService {
     final private ConversionData conversionData;
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) {
-        employeeDTO.setEmployeeCode(getNextEployeeCode());
+        employeeDTO.setEmployeeCode(getNextEmployeeCode());
         EmployeeEntity employeeEntity=conversionData.convertToEmployeeEntity(Optional.of(employeeDTO));
         employeeServiceDAO.save(employeeEntity);
     }
@@ -34,10 +34,15 @@ public class EmployeeServiceIMPL implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> getAllEmplyees() {
+    public Iterable<EmployeeDTO> getAllEmployees() {
         return conversionData.getEmployeeDTOList(employeeServiceDAO.findAll());
     }
 
+    /*@Override
+    public List<EmployeeDTO> getAllEmplyees() {
+        return conversionData.getEmployeeDTOList(employeeServiceDAO.findAll());
+    }
+*/
     @Override
     public void deleteEmplyee(String id) {
         if (!employeeServiceDAO.existsById(id)) throw new NotFoundException("Employee Not Found");
@@ -67,7 +72,7 @@ public class EmployeeServiceIMPL implements EmployeeService {
         employeeEntity.get().setEmergencyContact(employeeDTO.getEmergencyContact());
     }
 
-    private String getNextEployeeCode() {
+    private String getNextEmployeeCode() {
         EmployeeEntity firstByOrderByEmployeeCodeDesc = employeeServiceDAO.findFirstByOrderByEmployeeCodeDesc();
         return (firstByOrderByEmployeeCodeDesc != null)
                 ? String.format("Emp-%03d",

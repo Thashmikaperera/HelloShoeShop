@@ -9,9 +9,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "customer")
-@Data
+    @Entity
+    @Table(name = "customer")
+    @Data
 public class CustomerEntity implements SuperEntity{
     @Id
     private String customerId;

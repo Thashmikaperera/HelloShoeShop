@@ -53,6 +53,16 @@ public class SupplierController {
         }
     }
 
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<?> getAllSuppliers(){
+        try {
+            return ResponseEntity.ok(supplierService.getAllSuppliers());
+        }catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal Server error | Supplier Details fetched Unsuccessfully.\nMore Reason\n"+exception);
+        }
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteSupplier(@PathVariable ("id")String id){

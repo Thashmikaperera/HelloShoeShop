@@ -25,7 +25,7 @@ public class SupplierServiceIMPL implements SupplierService {
     @Override
     public void saveSupplier(SupplierDTO supplierDTO) {
         supplierDTO.setSupplierCode(getNextSupplierCode());
-        SupplierEntity supplierEntity=conversionData.convertToSupplierEntity(Optional.of(supplierDTO));
+        SupplierEntity supplierEntity = conversionData.convertToSupplierEntity(Optional.of(supplierDTO));
         supplierServiceDAO.save(supplierEntity);
     }
 
@@ -65,10 +65,9 @@ public class SupplierServiceIMPL implements SupplierService {
 
     private String getNextSupplierCode() {
         SupplierEntity firstByOrderBySupplierCodeDesc = supplierServiceDAO.findFirstByOrderBySupplierCodeDesc();
-        return (firstByOrderBySupplierCodeDesc != null)
-                ? String.format("Sup-%03d",
-                Integer.parseInt(firstByOrderBySupplierCodeDesc.getSupplierCode().
-                        replace("Sup-", "")) + 1)
-                : "Sup-001";
+        return (firstByOrderBySupplierCodeDesc != null) ?
+                String.format("Sup-%03d",Integer.parseInt(firstByOrderBySupplierCodeDesc.getSupplierCode()
+                        .replace("Sup-",""))+1) : "Sup-001";
     }
+
 }

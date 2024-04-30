@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
+
 @RestController
 @RequestMapping("/api/v1/employee")
 @AllArgsConstructor
@@ -24,20 +26,26 @@ public class EmployeeController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> saveEmployee(@Validated @RequestBody EmployeeDTO employeeDTO,
-                                               BindingResult bindingResult){
+                                               BindingResult bindingResult,@RequestPart("profilepic") String profilepic){
         if (bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
 
         try {
+            String dp =convertBase64(profilepic);
+            employeeDTO.setProfilePic(dp);
             employeeService.saveEmployee(employeeDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Employee Details saved Successfully.");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal server error | Employee saved Unsuccessfully.\nMore Details\n"+exception);
         }
+    }
+
+    private String convertBase64(String data) {
+        return Base64.getEncoder().encodeToString(data.getBytes());
     }
 
     @GetMapping(value = "/{id}",produces = "application/json")
@@ -54,7 +62,7 @@ public class EmployeeController {
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAllEmployees(){
         try {
-            return ResponseEntity.ok(employeeService.getAllEmplyees());
+            return ResponseEntity.ok(employeeService.getAllEmployees());
         }catch (Exception exception){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal server error | Employee Details fetched Unsuccessfully.\nMore Reason\n"+exception);
