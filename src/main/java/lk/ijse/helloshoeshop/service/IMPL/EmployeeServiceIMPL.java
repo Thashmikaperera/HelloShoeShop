@@ -11,6 +11,7 @@ import lk.ijse.helloshoeshop.repository.EmployeeServiceDAO;
 import lk.ijse.helloshoeshop.repository.UserServiceDAO;
 import lk.ijse.helloshoeshop.service.EmployeeService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,38 +20,35 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class EmployeeServiceIMPL {
-/*public class EmployeeServiceIMPL implements EmployeeService {*/
-    /*final private EmployeeServiceDAO employeeServiceDAO;
+public class EmployeeServiceIMPL implements EmployeeService {
+    @Autowired
+    final private EmployeeServiceDAO employeeServiceDAO;
+    @Autowired
     final private UserServiceDAO userServiceDAO;
+    @Autowired
     final private ConversionData conversionData;
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) {
         employeeDTO.setEmployeeCode(getNextEmployeeCode());
-        EmployeeEntity employeeEntity = conversionData.convertToEmployeeEntity(Optional.of(employeeDTO));
-
-        String email = employeeDTO.getEmail();
-        Optional<UserEntity> byEmail = userServiceDAO.findByEmail(email);
-
-        if (byEmail == null) {
+        Optional<UserEntity> userEntity = userServiceDAO.findByEmail(employeeDTO.getEmail());
+        EmployeeEntity employee = conversionData.convertToEmployeeEntity(Optional.of(employeeDTO));
+        if (userEntity == null) {
             throw new NotFoundException("User Not Found");
         }
+        UserEntity newUser = new UserEntity();
+        newUser.setId(userEntity.get().getId());
+        newUser.setEmail(userEntity.get().getEmail());
+        newUser.setPassword(userEntity.get().getPassword());
+        newUser.setRole(userEntity.get().getRole());
 
-        UserEntity newUserEntity = new UserEntity();
-        newUserEntity.setUserId(byEmail.get().getUserId());
-        newUserEntity.setEmail(email);
-        newUserEntity.setPassword(byEmail.get().getPassword());
-        newUserEntity.setRole(byEmail.get().getRole());
-
-        employeeEntity.setUserEntity(newUserEntity);
-
-        employeeServiceDAO.save(employeeEntity);
+        employee.setUserEntity(newUser);
+        employeeServiceDAO.save(employee);
     }
 
     @Override
     public EmployeeDTO getEmployee(String id) {
         if(!employeeServiceDAO.existsById(id)){throw new NotFoundException("Employee Not Found");}
-        return conversionData.convertToEmployeeDTO(employeeServiceDAO.findById(id));
+        return conversionData.convertToEmployeeDTO(Optional.ofNullable(employeeServiceDAO.findById(id).orElse(null)));
     }
 
     @Override
@@ -99,7 +97,7 @@ public class EmployeeServiceIMPL {
                 Integer.parseInt(employeeEntity.getEmployeeCode()
                         .replace("Emp-", "")) + 1)
                 : "Emp-001";
-    }*/
+    }
 
 
 }

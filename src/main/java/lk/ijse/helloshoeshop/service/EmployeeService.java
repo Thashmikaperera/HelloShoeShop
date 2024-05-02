@@ -5,10 +5,10 @@ import lk.ijse.helloshoeshop.dto.EmployeeDTO;
 import java.util.List;
 
 public interface EmployeeService {
-    /*void saveEmployee(EmployeeDTO employeeDTO);
+    void saveEmployee(EmployeeDTO employeeDTO);
     EmployeeDTO getEmployee(String id);
     List<EmployeeDTO> getAllEmployees();
     void deleteEmplyee(String id);
     void updateEmployee(String id,EmployeeDTO employeeDTO);
-    String getNextEmployeeCode();*/
+    String getNextEmployeeCode();
 }

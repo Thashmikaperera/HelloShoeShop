@@ -24,7 +24,7 @@ import java.util.Base64;
 @RequestMapping("/api/v1/employee")
 @AllArgsConstructor
 public class EmployeeController {
-    /*@Autowired
+    @Autowired
     final private EmployeeService employeeService;
 
     @GetMapping("/health")
@@ -36,7 +36,7 @@ public class EmployeeController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> saveEmployee(@Validated
                                               @RequestPart("employeeName") String employeeName,
-                                          @RequestPart("profilePic") String profilepic,
+                                          @RequestPart("profilePic") String profilePic,
                                           @RequestPart("gender") String gender,
                                           @RequestPart("status") String status,
                                           @RequestPart("designation") String designation,
@@ -60,7 +60,7 @@ public class EmployeeController {
 
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setEmployeeName(employeeName);
-        employeeDTO.setProfilePic(UtilMatter.convertBase64(profilepic));
+        employeeDTO.setProfilePic(UtilMatter.convertBase64(profilePic));
         employeeDTO.setGender(Gender.valueOf(gender));
         employeeDTO.setStatus(status);
         employeeDTO.setDesignation(designation);
@@ -77,7 +77,7 @@ public class EmployeeController {
         employeeDTO.setEmergencyContact(emergencyContact);
         employeeDTO.setDateOfJoin(Date.valueOf(dateOfJoin));
         employeeService.saveEmployee(employeeDTO);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Employee Details saved Successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body("Employee Details saved Successfully.");
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -173,5 +173,5 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body("Internal server error | Employee Details Updated Unsuccessfully.\nMore Reason\n" + exception);
         }
-    }*/
+    }
 }
