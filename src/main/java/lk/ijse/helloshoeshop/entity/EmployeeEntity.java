@@ -13,6 +13,7 @@ public class EmployeeEntity {
     @Id
     private String employeeCode;
     private String employeeName;
+    @Column(columnDefinition = "LONGTEXT")
     private String profilePic;
 
     @Enumerated(EnumType.STRING)

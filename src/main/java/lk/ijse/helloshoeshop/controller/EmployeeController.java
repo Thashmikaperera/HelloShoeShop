@@ -1,108 +1,177 @@
 package lk.ijse.helloshoeshop.controller;
 
 import jakarta.validation.Valid;
+import lk.ijse.helloshoeshop.Enum.Gender;
 import lk.ijse.helloshoeshop.dto.EmployeeDTO;
 import lk.ijse.helloshoeshop.exception.NotFoundException;
 import lk.ijse.helloshoeshop.service.EmployeeService;
+import lk.ijse.helloshoeshop.util.UtilMatter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
 import java.util.Base64;
 
 @RestController
 @RequestMapping("/api/v1/employee")
 @AllArgsConstructor
 public class EmployeeController {
+    /*@Autowired
     final private EmployeeService employeeService;
 
     @GetMapping("/health")
-    public String healthCheck(){
+    public String healthCheck() {
         return "Employee Health check";
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> saveEmployee(@Validated @RequestBody EmployeeDTO employeeDTO,
-                                               BindingResult bindingResult,@RequestPart("profilepic") String profilepic){
-        if (bindingResult.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+    public ResponseEntity<?> saveEmployee(@Validated
+                                              @RequestPart("employeeName") String employeeName,
+                                          @RequestPart("profilePic") String profilepic,
+                                          @RequestPart("gender") String gender,
+                                          @RequestPart("status") String status,
+                                          @RequestPart("designation") String designation,
+                                          @RequestPart("dateOfBirth") String dateOfBirth,
+                                          @RequestPart("attachedBranch") String attachedBranch,
+                                          @RequestPart("address1") String address1,
+                                          @RequestPart("address2") String address2,
+                                          @RequestPart("address3") String address3,
+                                          @RequestPart("address4") String address4,
+                                          @RequestPart("postalCode") String postalCode,
+                                          @RequestPart("contactNo") String contactNo,
+                                          @RequestPart("email") String email,
+                                          @RequestPart("emergencyContactName") String emergencyContactName,
+                                          @RequestPart("emergencyContact") String emergencyContact,
+                                          @RequestPart("dateOfJoin") String dateOfJoin,
+                                          Errors errors
+    ) {
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            String dp =convertBase64(profilepic);
-            employeeDTO.setProfilePic(dp);
-            employeeService.saveEmployee(employeeDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Employee Details saved Successfully.");
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal server error | Employee saved Unsuccessfully.\nMore Details\n"+exception);
-        }
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setEmployeeName(employeeName);
+        employeeDTO.setProfilePic(UtilMatter.convertBase64(profilepic));
+        employeeDTO.setGender(Gender.valueOf(gender));
+        employeeDTO.setStatus(status);
+        employeeDTO.setDesignation(designation);
+        employeeDTO.setDateOfBirth(Date.valueOf(dateOfBirth));
+        employeeDTO.setAttachedBranch(attachedBranch);
+        employeeDTO.setAddress1(address1);
+        employeeDTO.setAddress2(address2);
+        employeeDTO.setAddress3(address3);
+        employeeDTO.setAddress4(address4);
+        employeeDTO.setPostalCode(postalCode);
+        employeeDTO.setContactNo(contactNo);
+        employeeDTO.setEmail(email);
+        employeeDTO.setEmergencyContactName(emergencyContactName);
+        employeeDTO.setEmergencyContact(emergencyContact);
+        employeeDTO.setDateOfJoin(Date.valueOf(dateOfJoin));
+        employeeService.saveEmployee(employeeDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Employee Details saved Successfully.");
     }
 
-    private String convertBase64(String data) {
-        return Base64.getEncoder().encodeToString(data.getBytes());
-    }
-
-    @GetMapping(value = "/{id}",produces = "application/json")
-    public ResponseEntity<?> getEmployee(@PathVariable("id")String id){
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getEmployee(@Validated @PathVariable("id") String id) {
         try {
             return ResponseEntity.ok(employeeService.getEmployee(id));
-        }catch (NotFoundException exception){
+        } catch (NotFoundException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee Not Found");
-        }catch (Exception exception){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error | Employee Details fetched Unsuccessfully.\nMore Reason\n"+exception);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error | Employee Details fetched Unsuccessfully.\nMore Reason\n" + exception);
         }
     }
 
-    @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAllEmployees(){
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllEmployees() {
         try {
             return ResponseEntity.ok(employeeService.getAllEmployees());
-        }catch (Exception exception){
+        } catch (NotFoundException notFoundException) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee Not Found");
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal server error | Employee Details fetched Unsuccessfully.\nMore Reason\n"+exception);
+                    .body("Internal server error | Employee Details fetched Unsuccessfully.\nMore Reason\n" + exception);
         }
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable ("id") String id){
+    public ResponseEntity<String> deleteEmployee(@PathVariable("id") String id) {
         try {
             employeeService.deleteEmplyee(id);
             return ResponseEntity.status(HttpStatus.OK).body("Employee Details Delete Successfully");
-        }catch (NotFoundException exception){
+        } catch (NotFoundException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee Not Found");
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal server error | Employee Details deleted Unsuccessfully.\nMore Reason\n"+exception);
+                    .body("Internal server error | Employee Details deleted Unsuccessfully.\nMore Reason\n" + exception);
         }
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateEmployee(@Validated @RequestBody EmployeeDTO employeeDTO,
-                                                 BindingResult bindingResult,
-                                                 @PathVariable ("id") String id){
-        if (bindingResult.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateEmployee(@PathVariable("id") String id,
+                                            @Valid
+                                            @RequestPart("employeeName") String employeeName,
+                                            @RequestPart("profilePic") String profilePic,
+                                            @RequestPart("gender") String gender,
+                                            @RequestPart("status") String status,
+                                            @RequestPart("designation") String designation,
+                                            @RequestPart("dateOfBirth") String dateOfBirth,
+                                            @RequestPart("attachedBranch") String attachedBranch,
+                                            @RequestPart("address1") String address1,
+                                            @RequestPart("address2") String address2,
+                                            @RequestPart("address3") String address3,
+                                            @RequestPart("address4") String address4,
+                                            @RequestPart("postalCode") String postalCode,
+                                            @RequestPart("contactNo") String contactNo,
+                                            @RequestPart("email") String email,
+                                            @RequestPart("emergencyContactName") String emergencyContactName,
+                                            @RequestPart("emergencyContact") String emergencyContact,
+                                            @RequestPart("dateOfJoin") String dateOfJoin,
+                                            Errors errors) {
+        if (errors.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    errors.getFieldErrors().get(0).getDefaultMessage());
         }
+
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setEmployeeName(employeeName);
+        employeeDTO.setProfilePic(UtilMatter.convertBase64(profilePic));
+        employeeDTO.setGender(Gender.valueOf(gender));
+        employeeDTO.setStatus(status);
+        employeeDTO.setDesignation(designation);
+        employeeDTO.setDateOfBirth(Date.valueOf(dateOfBirth));
+        employeeDTO.setAttachedBranch(attachedBranch);
+        employeeDTO.setAddress1(address1);
+        employeeDTO.setAddress2(address2);
+        employeeDTO.setAddress3(address3);
+        employeeDTO.setAddress4(address4);
+        employeeDTO.setPostalCode(postalCode);
+        employeeDTO.setContactNo(contactNo);
+        employeeDTO.setEmail(email);
+        employeeDTO.setEmergencyContact(emergencyContact);
+        employeeDTO.setEmergencyContactName(emergencyContactName);
+        employeeDTO.setDateOfJoin(Date.valueOf(dateOfJoin));
 
         try {
             employeeService.updateEmployee(id, employeeDTO);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Employee Details Updated Successfully.");
-        }catch (NotFoundException exception){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Emloyee Not Found");
-        }catch (Exception exception){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal Server Error | Employee Details Updated Successfully.\nMore Reason\n"+exception);
+            return ResponseEntity.status(HttpStatus.OK).body("Employee Details Updated Successfully.");
+        } catch (NotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Employee Details Updated Unsuccessfully.\nMore Reason\n" + exception);
         }
-    }
+    }*/
 }
