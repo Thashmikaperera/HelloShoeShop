@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("/refresh")
     public ResponseEntity<JwtAuthResponse> refresh(
-            @RequestParam ("refreshToken") String refreshToken
+            @RequestParam ("refresh Token") String refreshToken
     ){
         System.out.println(refreshToken);
         return ResponseEntity.ok(authenticationService.refreshToken(refreshToken));

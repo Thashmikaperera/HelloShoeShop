@@ -11,6 +11,7 @@ import lk.ijse.helloshoeshop.repository.EmployeeServiceDAO;
 import lk.ijse.helloshoeshop.repository.UserServiceDAO;
 import lk.ijse.helloshoeshop.service.EmployeeService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
+@Slf4j
 public class EmployeeServiceIMPL implements EmployeeService {
     @Autowired
     final private EmployeeServiceDAO employeeServiceDAO;
@@ -30,9 +32,12 @@ public class EmployeeServiceIMPL implements EmployeeService {
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) {
         employeeDTO.setEmployeeCode(getNextEmployeeCode());
+        log.info(employeeDTO.getEmail());
         Optional<UserEntity> userEntity = userServiceDAO.findByEmail(employeeDTO.getEmail());
+        log.info("User Entity {]",userEntity);
         EmployeeEntity employee = conversionData.convertToEmployeeEntity(Optional.of(employeeDTO));
-        if (userEntity == null) {
+        if (userEntity.isEmpty()) {
+            System.out.println("hi");
             throw new NotFoundException("User Not Found");
         }
         UserEntity newUser = new UserEntity();
