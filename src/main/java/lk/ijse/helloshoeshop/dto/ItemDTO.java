@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ItemDTO implements SuperDTO{
-    @Null(message = "Item code generate by the program")
+    @Null(message = "Item generate by program")
     private String itemCode;
     @NotBlank(message = "Item Description cannot be blank")
     private String itemDesc;
@@ -20,6 +20,7 @@ public class ItemDTO implements SuperDTO{
     private String pic;
     @NotNull(message = "Status cannot be null")
     private Status status;
-    @NotNull(message = "Category cannot be null")
-    private String category;
+    private String genderCode;
+    private String occasionCode;
+    private String varietyCode;
 }

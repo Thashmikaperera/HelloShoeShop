@@ -3,13 +3,14 @@ package lk.ijse.helloshoeshop.entity;
 import jakarta.persistence.*;
 import lk.ijse.helloshoeshop.Enum.Status;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Entity
-@Table(name = "item")
+@RequiredArgsConstructor
 @Data
-public class ItemEntity {
+@Entity
+@Table(name = "item")public class ItemEntity {
     @Id
     private String itemCode;
     private String itemDesc;

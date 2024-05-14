@@ -1,13 +1,7 @@
 package lk.ijse.helloshoeshop.conversion;
 
-import lk.ijse.helloshoeshop.dto.CustomerDTO;
-import lk.ijse.helloshoeshop.dto.EmployeeDTO;
-import lk.ijse.helloshoeshop.dto.SupplierDTO;
-import lk.ijse.helloshoeshop.dto.UserDTO;
-import lk.ijse.helloshoeshop.entity.CustomerEntity;
-import lk.ijse.helloshoeshop.entity.EmployeeEntity;
-import lk.ijse.helloshoeshop.entity.SupplierEntity;
-import lk.ijse.helloshoeshop.entity.UserEntity;
+import lk.ijse.helloshoeshop.dto.*;
+import lk.ijse.helloshoeshop.entity.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -69,5 +63,50 @@ public class ConversionData {
 
     public UserDTO toUserDTO(UserEntity userEntity){
         return modelMapper.map(userEntity,UserDTO.class);
+    }
+
+    public GenderEntity toGenderEntity(GenderDTO genderDTO) {
+        return modelMapper.map(genderDTO, GenderEntity.class);
+    }
+
+    public GenderDTO toGenderDTO(GenderEntity genderEntity){
+        return modelMapper.map(genderEntity, GenderDTO.class);
+    }
+
+    public List<GenderDTO> convertToGenderDTO(List<GenderEntity> genderEntities) {
+        return modelMapper.map(genderEntities,List.class);
+    }
+
+    public OccasionDTO convertToOccasionDTO(OccasionEntity occasion) {
+        return modelMapper.map(occasion, OccasionDTO.class);
+    }
+    public OccasionEntity convertToOccasionEntity(OccasionDTO occasionDTO) {
+        return modelMapper.map(occasionDTO, OccasionEntity.class);
+    }
+
+    public List<OccasionDTO> convertToOccasionDTOList(List<OccasionEntity> occasion){
+        return modelMapper.map(occasion, List.class);
+    }
+
+    public VarietyDTO convertToVarietyDTO(VarietyEntity variety) {
+        return modelMapper.map(variety, VarietyDTO.class);
+    }
+    public VarietyEntity convertToVarietyEntity(VarietyDTO varietyDTO) {
+        return modelMapper.map(varietyDTO, VarietyEntity.class);
+    }
+
+    public List<VarietyDTO> convertToVarietyDTOList(List<VarietyEntity> varieties){
+        return modelMapper.map(varieties, List.class);
+    }
+
+    public ItemDTO convertToItemDTO(ItemEntity itemEntity) {
+        return modelMapper.map(itemEntity, ItemDTO.class);
+    }
+    public ItemEntity convertToItemEntity(ItemDTO itemDTO) {
+        return modelMapper.map(itemDTO, ItemEntity.class);
+    }
+
+    public List<ItemDTO> convertToItemDTOList(List<ItemEntity> items){
+        return modelMapper.map(items, List.class);
     }
 }
